@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(executables
+ ((names (server))
+  (public_names (feedserver))
+  (libraries (feedserver))
+  (preprocess (pps (ppx_jane lwt.ppx)))))

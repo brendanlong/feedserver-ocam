@@ -1,0 +1,20 @@
+(jbuild_version 1)
+
+(library
+ ((name feedserver)
+  (public_name feedserver)
+  (libraries (atdgen base cohttp-lwt-unix graphql-lwt ptime sexplib uri))
+  (inline_tests ((flags (-verbose))))
+  (preprocess (pps (ppx_jane lwt.ppx bisect_ppx -conditional)))))
+
+(rule
+ ((targets (feed_j.ml
+            feed_j.mli))
+  (deps    (feed.atd))
+  (action  (run atdgen -open Base.Export -open Base.Poly -open Sexplib.Std -deriving-conv compare,sexp_of -j -j-std ${^}))))
+
+(rule
+ ((targets (feed_t.ml
+            feed_t.mli))
+  (deps    (feed.atd))
+  (action  (run atdgen -open Base.Export -open Base.Poly -open Sexplib.Std -deriving-conv compare,sexp_of -t -j-std ${^}))))
